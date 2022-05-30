@@ -23,5 +23,7 @@ public class Bank {
         }
         Client client = Storage.findClient(accounts.get(1).getId());
         System.out.println(client);
+        System.out.println(Storage.getAccounts2(client));
+        System.out.println(Storage.findClient2(accounts.get(1)));
     }
 }
