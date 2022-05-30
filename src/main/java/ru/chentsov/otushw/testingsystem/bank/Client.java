@@ -2,6 +2,7 @@ package ru.chentsov.otushw.testingsystem.bank;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 class Client {
     private String name;
@@ -34,5 +35,18 @@ class Client {
         return "Client{" +
                 "name='" + name + '\'' +
                 ", old=" + old + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Client client = (Client) o;
+        return name.equals(client.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }
