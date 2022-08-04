@@ -4,11 +4,17 @@ public class Countable {
     private final String singular;
     private final String some;
     private final String plural;
+    boolean masculine;
 
-    public Countable(String singular, String some, String plural) {
+    public Countable(String singular, String some, String plural, boolean masculine) {
         this.singular = singular;
         this.some = some;
         this.plural = plural;
+        this.masculine = masculine;
+    }
+
+    public boolean isMasculine() {
+        return masculine;
     }
 
     public String print(int number) {

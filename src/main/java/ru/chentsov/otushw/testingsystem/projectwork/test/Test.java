@@ -1,6 +1,7 @@
 package ru.chentsov.otushw.testingsystem.projectwork.test;
 
 import ru.chentsov.otushw.testingsystem.projectwork.priceinwords.ConsoleIO;
+import ru.chentsov.otushw.testingsystem.projectwork.priceinwords.Countable;
 import ru.chentsov.otushw.testingsystem.projectwork.priceinwords.Handler;
 import ru.chentsov.otushw.testingsystem.testing.test.Assertions;
 
@@ -8,7 +9,8 @@ import ru.chentsov.otushw.testingsystem.testing.test.Assertions;
 public class Test {
     public static void main(String[] args) {
         new CheckParsePriceFromConsole().start();
-        new CheckTransformPriceToString().start();
+        new CheckTransformPriceRUBToString().start();
+        new CheckTransformPriceJPYToString().start();
     }
 }
 
@@ -69,14 +71,19 @@ class CheckParsePriceFromConsole {
     }
 }
 
-class CheckTransformPriceToString {
+class CheckTransformPriceRUBToString {
+    private Countable millionsCountable = new Countable("миллион ", "миллиона ", "миллионов ", true);
+    private Countable thousandsCountable = new Countable("тысяча ", "тысячи ", "тысяч ", false);
+    private Countable currencyCountable = new Countable("рубль", "рубля", "рублей", true);
+    private Handler handler = new Handler(currencyCountable, thousandsCountable, millionsCountable);
+
     void start() {
-        System.out.println("Проверка правильности преобразования цены в запись прописью");
+        System.out.println("Проверка правильности преобразования цены в рублях в запись прописью");
         start1();
         start2();
         start3();
         start4();
-        System.out.println("Проверка правильности преобразования цены в запись прописью завершена");
+        System.out.println("Проверка правильности преобразования цены в рублях в запись прописью завершена");
     }
 
     private void start1() {
@@ -85,7 +92,7 @@ class CheckTransformPriceToString {
         String scenario = "Проверка " + price;
 
         try {
-            Assertions.assertEquals(expectedString, Handler.transform(price));
+            Assertions.assertEquals(expectedString, handler.transform(price));
             System.out.printf("\"%s\" passed %n", scenario);
         } catch (Throwable e) {
             System.err.printf("\"%s\" fails with message \"%s\" %n", scenario, e.getMessage());
@@ -98,7 +105,7 @@ class CheckTransformPriceToString {
         String scenario = "Проверка " + price;
 
         try {
-            Assertions.assertEquals(expectedString, Handler.transform(price));
+            Assertions.assertEquals(expectedString, handler.transform(price));
             System.out.printf("\"%s\" passed %n", scenario);
         } catch (Throwable e) {
             System.err.printf("\"%s\" fails with message \"%s\" %n", scenario, e.getMessage());
@@ -111,7 +118,7 @@ class CheckTransformPriceToString {
         String scenario = "Проверка " + price;
 
         try {
-            Assertions.assertEquals(expectedString, Handler.transform(price));
+            Assertions.assertEquals(expectedString, handler.transform(price));
             System.out.printf("\"%s\" passed %n", scenario);
         } catch (Throwable e) {
             System.err.printf("\"%s\" fails with message \"%s\" %n", scenario, e.getMessage());
@@ -124,7 +131,75 @@ class CheckTransformPriceToString {
         String scenario = "Проверка " + price;
 
         try {
-            Assertions.assertEquals(expectedString, Handler.transform(price));
+            Assertions.assertEquals(expectedString, handler.transform(price));
+            System.out.printf("\"%s\" passed %n", scenario);
+        } catch (Throwable e) {
+            System.err.printf("\"%s\" fails with message \"%s\" %n", scenario, e.getMessage());
+        }
+    }
+}
+
+class CheckTransformPriceJPYToString {
+    private Countable millionsCountable = new Countable("миллион ", "миллиона ", "миллионов ", true);
+    private Countable thousandsCountable = new Countable("тысяча ", "тысячи ", "тысяч ", false);
+    private Countable currencyCountable = new Countable("йена", "йены", "йен", false);
+    private Handler handler = new Handler(currencyCountable, thousandsCountable, millionsCountable);
+
+    void start() {
+        System.out.println("Проверка правильности преобразования цены в йенах в запись прописью");
+        start1();
+        start2();
+        start3();
+        start4();
+        System.out.println("Проверка правильности преобразования цены в йенах в запись прописью завершена");
+    }
+
+    private void start1() {
+        int price = 1;
+        String expectedString = "одна йена";
+        String scenario = "Проверка " + price;
+
+        try {
+            Assertions.assertEquals(expectedString, handler.transform(price));
+            System.out.printf("\"%s\" passed %n", scenario);
+        } catch (Throwable e) {
+            System.err.printf("\"%s\" fails with message \"%s\" %n", scenario, e.getMessage());
+        }
+    }
+
+    private void start2() {
+        int price = 127;
+        String expectedString = "сто двадцать семь йен";
+        String scenario = "Проверка " + price;
+
+        try {
+            Assertions.assertEquals(expectedString, handler.transform(price));
+            System.out.printf("\"%s\" passed %n", scenario);
+        } catch (Throwable e) {
+            System.err.printf("\"%s\" fails with message \"%s\" %n", scenario, e.getMessage());
+        }
+    }
+
+    private void start3() {
+        int price = 735_193;
+        String expectedString = "семьсот тридцать пять тысяч сто девяносто три йены";
+        String scenario = "Проверка " + price;
+
+        try {
+            Assertions.assertEquals(expectedString, handler.transform(price));
+            System.out.printf("\"%s\" passed %n", scenario);
+        } catch (Throwable e) {
+            System.err.printf("\"%s\" fails with message \"%s\" %n", scenario, e.getMessage());
+        }
+    }
+
+    private void start4() {
+        int price = 1_000_000;
+        String expectedString = "один миллион йен";
+        String scenario = "Проверка " + price;
+
+        try {
+            Assertions.assertEquals(expectedString, handler.transform(price));
             System.out.printf("\"%s\" passed %n", scenario);
         } catch (Throwable e) {
             System.err.printf("\"%s\" fails with message \"%s\" %n", scenario, e.getMessage());
